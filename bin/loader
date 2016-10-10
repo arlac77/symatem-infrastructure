@@ -5,7 +5,8 @@
 'use strict';
 
 const symatem = require('symatem'),
-  fs = require('fs');
+  fs = require('fs'),
+  zonefile = require('dns-zonefile');
 
 const symbolCache = {};
 
@@ -27,6 +28,24 @@ symatem.open().then(connection =>
           });
         })).then(
           decoded => {
+            const zone = {
+              '$origin': '0.168.192.IN-ADDR.ARPA.',
+              '$ttl': 3600,
+              soa: {
+                mname: 'NS1.NAMESERVER.NET.',
+                rname: 'HOSTMASTER.MYDOMAIN.COM.',
+                serial: '{time}',
+                refresh: 3600,
+                retry: 600,
+                expire: 604800,
+                minimum: 86400
+              },
+              ns: [],
+              a: [],
+              aaaa: [],
+              ptr: []
+            };
+
             for (let i = 0; i < decoded.length; i += 2) {
               const a = decoded[i + 0];
               delete a.BlobType;
@@ -35,8 +54,30 @@ symatem.open().then(connection =>
               const b = decoded[i + 1];
               delete b.BlobType;
 
+              if (b.ipv4Address !== undefined) {
+                zone.a.push({
+                  ip: b.ipv4Address,
+                  name: a.name
+                });
+              }
+              if (b.ipv6Address !== undefined) {
+                zone.aaaa.push({
+                  ip: b.ipv6Address,
+                  name: a.name
+                });
+              }
+
+              if (a.product) {
+                zone.ptr.push({
+                  name: zone.ptr.length + 1,
+                  host: a.name
+                });
+              }
               console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
             }
+
+
+            console.log(zonefile.generate(zone));
           }
         );
       });
