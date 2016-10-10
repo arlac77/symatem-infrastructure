@@ -21,13 +21,13 @@
     "url": "https://github.com/arlac77/symatem-infrastructure.git"
   },
   "dependencies": {
-    "symatem": "^1.0.0"
+    "symatem": "^1.11.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.1.0",
-    "istanbul": "^0.4.5",
     "codecov": "^1.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.1",
     "semantic-release": "6.3.1"
   }
 }
