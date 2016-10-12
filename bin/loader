@@ -17,14 +17,13 @@ symatem.open({
   .then(result => {
     return connection.upload('networkInterface').then(result => {
       connection.query(false, symatem.queryMask.VMV, 0, result[0], 0).then(ipas => {
-        //console.log(ipas);
         Promise.all(ipas.map(symbol => {
           if (symbolCache[symbol]) {
-            console.log(`already found: ${symbol}`);
+            //console.log(`already found: ${symbol}`);
             return Promise.resolve(symbolCache[symbol]);
           }
           return connection.decodeSymbol(symbol).then(decoded => {
-            console.log(`add ${symbol} -> ${decoded.name}`);
+            //console.log(`add ${symbol} -> ${decoded.name}`);
             symbolCache[symbol] = decoded;
             return decoded;
           });
@@ -50,11 +49,11 @@ symatem.open({
 
             for (let i = 0; i < decoded.length; i += 2) {
               const a = decoded[i + 0];
-              delete a.BlobType;
-              delete a.networkInterface;
-
               const b = decoded[i + 1];
-              delete b.BlobType;
+
+              //delete a.BlobType;
+              //delete a.networkInterface;
+              //delete b.BlobType;
 
               if (b.ipv4Address !== undefined) {
                 zone.a.push({
@@ -75,10 +74,11 @@ symatem.open({
                   host: a.name
                 });
               }
-              console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
+              //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
             }
 
             console.log(zonefile.generate(zone));
+            connection.close();
           }
         );
       });
