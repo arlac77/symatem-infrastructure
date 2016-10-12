@@ -9,8 +9,6 @@ const symatem = require('symatem'),
   zonefile = require('dns-zonefile'),
   commander = require('commander');
 
-const symbolCache = {};
-
 commander
 //.version(module.exports.version)
 //.description('run cluster node')
@@ -18,24 +16,47 @@ commander
   .option('--hrl <file>', 'hrl source')
   .parse(process.argv);
 
+
+function createSymbolCache(connection) {
+  const symbolCache = {};
+  const ongoing = {};
+
+  return function (symbols) {
+    return Promise.all(symbols.map(symbol => {
+      if (symbolCache[symbol]) {
+        console.log(`already found: ${symbol}`);
+        return Promise.resolve(symbolCache[symbol]);
+      }
+      if (ongoing[symbol]) {
+        console.log(`already requested: ${symbol}`);
+        return ongoing;
+      }
+
+      const p = connection.decodeSymbol(symbol).then(decoded => {
+        console.log(`add ${symbol} -> ${decoded.name}`);
+        symbolCache[symbol] = decoded;
+        delete ongoing[symbol];
+        return decoded;
+      });
+      ongoing[symbol] = p;
+      return p;
+    }));
+  };
+}
+
+let symbolDecoder;
+
 symatem.open({
-  store: commander.store
-}).then(connection =>
-  connection.upload(fs.readFileSync(commander.hrl))
-  .then(result =>
-    connection.upload('networkInterface').then(result =>
-      connection.query(false, symatem.queryMask.VMV, 0, result[0], 0).then(ipas =>
-        Promise.all(ipas.map(symbol => {
-          if (symbolCache[symbol]) {
-            //console.log(`already found: ${symbol}`);
-            return Promise.resolve(symbolCache[symbol]);
-          }
-          return connection.decodeSymbol(symbol).then(decoded => {
-            //console.log(`add ${symbol} -> ${decoded.name}`);
-            symbolCache[symbol] = decoded;
-            return decoded;
-          });
-        })).then(
+    store: commander.store
+  }).then(connection => {
+    symbolDecoder = createSymbolCache(connection);
+    return connection;
+  })
+  .then(connection => connection.upload(fs.readFileSync(commander.hrl))
+    .then(result => connection.upload('networkInterface')
+      .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
+        .then(result => symbolDecoder(result))
+        .then(
           decoded => {
             const zone = {
               '$origin': '0.168.192.IN-ADDR.ARPA.',
@@ -91,5 +112,4 @@ symatem.open({
         )
       )
     )
-  )
-  .catch(result => console.error(result)));
+    .catch(result => console.error(result)));
