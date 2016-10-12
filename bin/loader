@@ -24,16 +24,16 @@ function createSymbolCache(connection) {
   return function (symbols) {
     return Promise.all(symbols.map(symbol => {
       if (symbolCache[symbol]) {
-        console.log(`already found: ${symbol}`);
+        //console.log(`already found: ${symbol}`);
         return Promise.resolve(symbolCache[symbol]);
       }
       if (ongoing[symbol]) {
-        console.log(`already requested: ${symbol}`);
+        //console.log(`already requested: ${symbol}`);
         return ongoing;
       }
 
       const p = connection.decodeSymbol(symbol).then(decoded => {
-        console.log(`add ${symbol} -> ${decoded.name}`);
+        //console.log(`add ${symbol} -> ${decoded.name}`);
         symbolCache[symbol] = decoded;
         delete ongoing[symbol];
         return decoded;
@@ -58,6 +58,13 @@ symatem.open({
         .then(result => symbolDecoder(result))
         .then(
           decoded => {
+            connection.upload('network')
+              .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0))
+              .then(result => symbolDecoder(result))
+              .then(symbols => {
+                console.log(symbols);
+              }).catch(e => console.error(e));
+
             const zone = {
               '$origin': '0.168.192.IN-ADDR.ARPA.',
               '$ttl': 3600,
