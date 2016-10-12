@@ -6,17 +6,25 @@
 
 const symatem = require('symatem'),
   fs = require('fs'),
-  zonefile = require('dns-zonefile');
+  zonefile = require('dns-zonefile'),
+  commander = require('commander');
 
 const symbolCache = {};
 
+commander
+//.version(module.exports.version)
+//.description('run cluster node')
+  .option('--store <file>', 'symatem store')
+  .option('--hrl <file>', 'hrl source')
+  .parse(process.argv);
+
 symatem.open({
-  store: 'a.store'
+  store: commander.store
 }).then(connection =>
-  connection.upload(fs.readFileSync('../de.mfelten.infrastructure/assets.sym'))
-  .then(result => {
-    return connection.upload('networkInterface').then(result => {
-      connection.query(false, symatem.queryMask.VMV, 0, result[0], 0).then(ipas => {
+  connection.upload(fs.readFileSync(commander.hrl))
+  .then(result =>
+    connection.upload('networkInterface').then(result =>
+      connection.query(false, symatem.queryMask.VMV, 0, result[0], 0).then(ipas =>
         Promise.all(ipas.map(symbol => {
           if (symbolCache[symbol]) {
             //console.log(`already found: ${symbol}`);
@@ -80,8 +88,8 @@ symatem.open({
             console.log(zonefile.generate(zone));
             connection.close();
           }
-        );
-      });
-    });
-  })
+        )
+      )
+    )
+  )
   .catch(result => console.error(result)));

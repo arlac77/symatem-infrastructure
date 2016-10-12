@@ -21,6 +21,7 @@
     "url": "https://github.com/arlac77/symatem-infrastructure.git"
   },
   "dependencies": {
+    "commander": "^2.9.0",
     "dns-zonefile": "^0.1.19",
     "symatem": "^1.12.0"
   },
