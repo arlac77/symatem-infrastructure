@@ -23,104 +23,70 @@ commander
 
 const out = commander.out || '/tmp';
 
-function createSymbolCache(connection) {
-  const symbolCache = {};
-  const ongoing = {};
-
-  return function (symbols) {
-    return Promise.all(symbols.map(symbol => {
-      if (symbolCache[symbol]) {
-        //console.log(`already found: ${symbol}`);
-        return Promise.resolve(symbolCache[symbol]);
-      }
-      if (ongoing[symbol]) {
-        //console.log(`already requested: ${symbol}`);
-        return ongoing;
-      }
-
-      const p = connection.decodeSymbol(symbol).then(decoded => {
-        //console.log(`add ${symbol} -> ${decoded.name}`);
-        symbolCache[symbol] = decoded;
-        delete ongoing[symbol];
-        return decoded;
-      });
-      ongoing[symbol] = p;
-      return p;
-    }));
-  };
-}
-
-let symbolDecoder;
-
 symatem.open({
-    store: commander.store
-  }).then(connection => {
-    symbolDecoder = createSymbolCache(connection);
-    return connection;
-  })
-  .then(connection => connection.upload(fs.readFileSync(commander.hrl))
-    .then(result => connection.upload('networkInterface')
-      .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
-        .then(result => symbolDecoder(result))
-        .then(
-          decoded => {
-            connection.upload('network')
-              .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0))
-              .then(result => symbolDecoder(result))
-              .then(symbols => {
-                console.log(symbols);
-              }).catch(e => console.error(e));
+  store: commander.store
+}).then(connection => connection.upload(fs.readFileSync(commander.hrl))
+  .then(result => connection.upload('networkInterface')
+    .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
+      .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
+      .then(dps => Promise.all(dps))
+      .then(
+        decoded => {
+          const promises = [];
 
-            const promises = [];
+          promises.push(connection.upload('network')
+            .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0))
+            .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
+            .then(dps => Promise.all(dps))
+            .then(symbols => {
+              console.log(symbols);
+            }));
 
-            const zone = {
-              '$origin': '0.168.192.IN-ADDR.ARPA.',
-              '$ttl': 3600,
-              soa: {
-                mname: 'NS1.NAMESERVER.NET.',
-                rname: 'HOSTMASTER.MYDOMAIN.COM.',
-                serial: '{time}',
-                refresh: 3600,
-                retry: 600,
-                expire: 604800,
-                minimum: 86400
-              },
-              ns: [],
-              a: [],
-              aaaa: [],
-              ptr: []
-            };
+          const zone = {
+            '$origin': '0.168.192.IN-ADDR.ARPA.',
+            '$ttl': 3600,
+            soa: {
+              mname: 'NS1.NAMESERVER.NET.',
+              rname: 'HOSTMASTER.MYDOMAIN.COM.',
+              serial: '{time}',
+              refresh: 3600,
+              retry: 600,
+              expire: 604800,
+              minimum: 86400
+            },
+            ns: [],
+            a: [],
+            aaaa: [],
+            ptr: []
+          };
 
-            for (let i = 0; i < decoded.length; i += 2) {
-              const a = decoded[i + 0];
-              const b = decoded[i + 1];
+          for (let i = 0; i < decoded.length; i += 2) {
+            const a = decoded[i + 0];
+            const b = decoded[i + 1];
 
-              //delete a.BlobType;
-              //delete a.networkInterface;
-              //delete b.BlobType;
+            if (b.ipv4Address !== undefined) {
+              zone.a.push({
+                ip: b.ipv4Address,
+                name: a.name
+              });
+            }
+            if (b.ipv6Address !== undefined) {
+              zone.aaaa.push({
+                ip: b.ipv6Address,
+                name: a.name
+              });
+            }
 
-              if (b.ipv4Address !== undefined) {
-                zone.a.push({
-                  ip: b.ipv4Address,
-                  name: a.name
-                });
-              }
-              if (b.ipv6Address !== undefined) {
-                zone.aaaa.push({
-                  ip: b.ipv6Address,
-                  name: a.name
-                });
-              }
+            if (a.product) {
+              zone.ptr.push({
+                name: zone.ptr.length + 1,
+                host: a.name
+              });
+            }
 
-              if (a.product) {
-                zone.ptr.push({
-                  name: zone.ptr.length + 1,
-                  host: a.name
-                });
-              }
-
+            if (a.manufacturer === undefined) {
               //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-              //
+
               const name = a.name;
 
               const json = {
@@ -143,19 +109,20 @@ symatem.open({
 
               promises.push(writeFile(path.join(out, `${name}.plist`), plist.build(json)));
             }
-
-            promises.push(writeFile(path.join(out, 'a.zone'), zonefile.generate(zone)));
-
-            Promise.all(promises).then(() => {
-              console.log('done');
-            });
-
-            connection.close();
           }
-        )
+
+          promises.push(writeFile(path.join(out, 'a.zone'), zonefile.generate(zone)));
+
+          Promise.all(promises)
+            .then(() => console.log('done'))
+            .catch(e => console.error(e));
+
+          connection.close();
+        }
       )
     )
-    .catch(result => console.error(result)));
+  )
+  .catch(result => console.error(result)));
 
 
 function writeFile(name, encoding) {
