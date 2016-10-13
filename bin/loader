@@ -11,6 +11,8 @@ const symatem = require('symatem'),
   commander = require('commander'),
   plist = require('plist');
 
+
+
 commander
 //.version(module.exports.version)
 //.description('run cluster node')
@@ -68,6 +70,8 @@ symatem.open({
               .then(symbols => {
                 console.log(symbols);
               }).catch(e => console.error(e));
+
+            const promises = [];
 
             const zone = {
               '$origin': '0.168.192.IN-ADDR.ARPA.',
@@ -137,10 +141,14 @@ symatem.open({
                 }
               }
 
-              fs.writeFile(path.join(out, `${name}.plist`), plist.build(json));
+              promises.push(writeFile(path.join(out, `${name}.plist`), plist.build(json)));
             }
 
-            fs.writeFile(path.join(out, 'a.zone'), zonefile.generate(zone));
+            promises.push(writeFile(path.join(out, 'a.zone'), zonefile.generate(zone)));
+
+            Promise.all(promises).then(() => {
+              console.log('done');
+            });
 
             connection.close();
           }
@@ -148,3 +156,16 @@ symatem.open({
       )
     )
     .catch(result => console.error(result)));
+
+
+function writeFile(name, encoding) {
+  return new Promise((fullfill, reject) => {
+    fs.writeFile(name, encoding, error => {
+      if (error) {
+        reject(error);
+      } else {
+        fullfill();
+      }
+    });
+  });
+}
