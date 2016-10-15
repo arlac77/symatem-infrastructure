@@ -11,8 +11,6 @@ const symatem = require('symatem'),
   commander = require('commander'),
   plist = require('plist');
 
-
-
 commander
 //.version(module.exports.version)
 //.description('run cluster node')
@@ -34,8 +32,8 @@ symatem.open({
         decoded => {
           const promises = [];
 
-          promises.push(connection.upload('network')
-            .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0))
+          promises.push(Promise.all([connection.upload('isa'), connection.upload('network')])
+            .then(result => connection.query(false, symatem.queryMask.VMM, 0, result[0], result[1]))
             .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
             .then(dps => Promise.all(dps))
             .then(symbols => {
@@ -107,10 +105,38 @@ symatem.open({
                 }
               }
 
+              // var/db/dslocal/nodes/Default/computers
               promises.push(writeFile(path.join(out, `${name}.plist`), plist.build(json)));
             }
           }
 
+          // Library/Server/named/db.${network}
+          // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
+
+          const ins =
+            `         zone "1.0.10.in-addr.arpa" IN {
+        type master;
+        file "db.1.0.10.in-addr.arpa";
+        allow-transfer {
+                none;
+        };
+        allow-update {
+                none;
+        };
+};
+zone "mf.de" IN {
+        type master;
+        file "db.mf.de";
+        allow-transfer {
+                none;
+        };
+        allow-update {
+                none;
+        };
+};
+`;
+          //
+          //
           promises.push(writeFile(path.join(out, 'a.zone'), zonefile.generate(zone)));
 
           Promise.all(promises)
@@ -122,7 +148,7 @@ symatem.open({
       )
     )
   )
-  .catch(result => console.error(result)));
+  .catch(error => console.error(error)));
 
 
 function writeFile(name, encoding) {
