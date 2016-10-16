@@ -4,12 +4,6 @@ os:
 node_js:
   - 6.7
 sudo: false
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
 branches:
   only:
     - master
@@ -24,14 +18,9 @@ before_install:
   - npm i -g npm@latest
 before_script:
   - npm prune
-  - curl -O http://mfelten.de/Symatem/Symatem_$(uname -s)_$(uname -p).tar
-  - tar xvf Symatem_$(uname -s)_$(uname -p).tar SymatemAPI
-  - rm Symatem_$(uname -s)_$(uname -p).tar
-  - chmod +x SymatemAPI
 script:
   - npm run cover
 after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 after_success:
-  - rm SymatemAPI
   - npm run semantic-release
