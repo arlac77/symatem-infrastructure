@@ -24,13 +24,13 @@
     "commander": "^2.9.0",
     "dns-zonefile": "^0.1.19",
     "plist": "^2.0.1",
-    "symatem": "^1.14.1"
+    "symatem": "^1.15.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "codecov": "^1.0.0",
+    "codecov": "^1.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.1.1",
+    "mocha": "^3.1.2",
     "semantic-release": "6.3.1"
   }
 }
