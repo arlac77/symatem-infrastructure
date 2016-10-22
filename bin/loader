@@ -34,7 +34,7 @@ symatem.open({
           const promises = [];
 
           promises.push(connection.upload('network')
-            .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0)
+            .then(result => connection.query(false, symatem.queryMask.VIM, 0, 0, result[0])
               .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
               .then(dps => Promise.all(dps))
               .then(symbols => {
@@ -71,17 +71,21 @@ symatem.open({
                   ip: b.ipv4Address,
                   name: name
                 });
+
+                zone.ptr.push({
+                  name: b.ipv4Address,
+                  host: name
+                });
+
               }
               if (b.ipv6Address !== undefined) {
                 zone.aaaa.push({
                   ip: b.ipv6Address,
                   name: name
                 });
-              }
 
-              if (a.product) {
                 zone.ptr.push({
-                  name: zone.ptr.length + 1,
+                  name: b.ipv6Address,
                   host: name
                 });
               }
@@ -137,15 +141,15 @@ zone "mf.de" IN {
         };
 };
 `;
-          //
 
           promises.push(writeFile(path.join(out, 'var/db'), 'a.zone', zonefile.generate(zone)));
 
           Promise.all(promises)
-            .then(() => console.log('done'))
+            .then(() => {
+              connection.close();
+              console.log('done');
+            })
             .catch(e => console.error(e));
-
-          connection.close();
         }
       )
     )
