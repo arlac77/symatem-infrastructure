@@ -7,6 +7,7 @@
 const symatem = require('symatem'),
   path = require('path'),
   fs = require('fs'),
+  mkdirp = require('mkdirp'),
   zonefile = require('dns-zonefile'),
   commander = require('commander'),
   plist = require('plist');
@@ -19,12 +20,12 @@ commander
   .option('--out <dir>', 'output directory')
   .parse(process.argv);
 
-const out = commander.out || '/tmp';
+const out = commander.out || 'out';
 
 symatem.open({
   store: commander.store
 }).then(connection => connection.upload(fs.readFileSync(commander.hrl))
-  .then(result => connection.upload('networkInterface')
+  .then(() => connection.upload('networkInterface')
     .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
       .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
       .then(dps => Promise.all(dps))
@@ -32,13 +33,13 @@ symatem.open({
         decoded => {
           const promises = [];
 
-          promises.push(Promise.all([connection.upload('isa'), connection.upload('network')])
-            .then(result => connection.query(false, symatem.queryMask.VMM, 0, result[0], result[1]))
-            .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
-            .then(dps => Promise.all(dps))
-            .then(symbols => {
-              console.log(symbols);
-            }));
+          promises.push(connection.upload('network')
+            .then(result => connection.query(false, symatem.queryMask.VIM, 0, result[0], 0)
+              .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
+              .then(dps => Promise.all(dps))
+              .then(symbols => {
+                console.log(symbols);
+              })));
 
           const zone = {
             '$origin': '0.168.192.IN-ADDR.ARPA.',
@@ -62,54 +63,55 @@ symatem.open({
             const a = decoded[i + 0];
             const b = decoded[i + 1];
 
-            if (b.ipv4Address !== undefined) {
-              zone.a.push({
-                ip: b.ipv4Address,
-                name: a.name
-              });
-            }
-            if (b.ipv6Address !== undefined) {
-              zone.aaaa.push({
-                ip: b.ipv6Address,
-                name: a.name
-              });
-            }
+            if (a.name) {
+              const name = a.name.toLowerCase();
 
-            if (a.product) {
-              zone.ptr.push({
-                name: zone.ptr.length + 1,
-                host: a.name
-              });
-            }
-
-            if (a.manufacturer === undefined) {
-              //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-
-              const name = a.name;
-
-              const json = {
-                name: [name],
-                en_address: [],
-                ip_address: [],
-                ipaddressandenetaddress: []
-              };
-
-              if (b.macAddress) {
-                json.en_address.push(b.macAddress);
+              if (b.ipv4Address !== undefined) {
+                zone.a.push({
+                  ip: b.ipv4Address,
+                  name: name
+                });
               }
-              if (b.ipv4Address) {
-                json.ip_address.push(b.ipv4Address);
+              if (b.ipv6Address !== undefined) {
+                zone.aaaa.push({
+                  ip: b.ipv6Address,
+                  name: name
+                });
+              }
+
+              if (a.product) {
+                zone.ptr.push({
+                  name: zone.ptr.length + 1,
+                  host: name
+                });
+              }
+
+              if (a.manufacturer === undefined) {
+                //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
+
+                const json = {
+                  name: [name],
+                  en_address: [],
+                  ip_address: [],
+                  ipaddressandenetaddress: []
+                };
 
                 if (b.macAddress) {
-                  json.ipaddressandenetaddress.push(`${b.ipv4Address}/${b.macAddress}`);
+                  json.en_address.push(b.macAddress);
                 }
-              }
+                if (b.ipv4Address) {
+                  json.ip_address.push(b.ipv4Address);
 
-              // var/db/dslocal/nodes/Default/computers
-              promises.push(writeFile(path.join(out, `${name}.plist`), plist.build(json)));
+                  if (b.macAddress) {
+                    json.ipaddressandenetaddress.push(`${b.ipv4Address}/${b.macAddress}`);
+                  }
+                }
+
+                promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
+                  `${name}.plist`, plist.build(json)));
+              }
             }
           }
-
           // Library/Server/named/db.${network}
           // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
 
@@ -136,8 +138,8 @@ zone "mf.de" IN {
 };
 `;
           //
-          //
-          promises.push(writeFile(path.join(out, 'a.zone'), zonefile.generate(zone)));
+
+          promises.push(writeFile(path.join(out, 'var/db'), 'a.zone', zonefile.generate(zone)));
 
           Promise.all(promises)
             .then(() => console.log('done'))
@@ -151,14 +153,20 @@ zone "mf.de" IN {
   .catch(error => console.error(error)));
 
 
-function writeFile(name, encoding) {
+function writeFile(dir, name, encoding) {
   return new Promise((fullfill, reject) => {
-    fs.writeFile(name, encoding, error => {
+    mkdirp(dir, (error) => {
       if (error) {
         reject(error);
-      } else {
-        fullfill();
+        return;
       }
+      fs.writeFile(path.join(dir, name), encoding, error => {
+        if (error) {
+          reject(error);
+        } else {
+          fullfill();
+        }
+      });
     });
   });
 }
