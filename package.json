@@ -25,7 +25,7 @@
     "dns-zonefile": "^0.1.19",
     "mkdirp": "^0.5.1",
     "plist": "^2.0.1",
-    "symatem": "^1.16.0"
+    "symatem": "^1.16.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
