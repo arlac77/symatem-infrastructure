@@ -1,17 +1,13 @@
 {
   "name": "symatem-infrastructure",
   "version": "0.0.0-semantic-release",
-  "authors": [
-    "Alexander Meißner",
-    "Markus Felten"
-  ],
   "license": "BSD-2-Clause",
   "description": "infrastructure taxometry with Symatem",
   "scripts": {
     "cover": "npm run build && ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests/*_test.js",
     "test": "npm run build && mocha tests/*_test.js && markdown-doctest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "docs": "jsdoc2md -l off -t README.hbs -f {{module}} > README.md"
+    "docs": "jsdoc2md -l off -t doc/README.hbs > README.md"
   },
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
@@ -41,15 +37,13 @@
   "engines": {
     "node": ">=6.9.1"
   },
-  "module": "{{module}}",
-  "main": "{{main}}",
   "keywords": [],
-  "contributors": [
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    }
-  ],
+  "contributors": [{
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }, {
+    "name": "Alexander Meißner"
+  }],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
