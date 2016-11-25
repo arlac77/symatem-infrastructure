@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /* jslint node: true, esnext: true */
 
 'use strict';
@@ -23,7 +21,7 @@ commander
 const out = commander.out || 'out';
 
 symatem.open({
-  store: commander.store
+  //store: commander.store
 }).then(connection => connection.upload(fs.readFileSync(commander.hrl))
   .then(() => connection.upload('networkInterface')
     .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
