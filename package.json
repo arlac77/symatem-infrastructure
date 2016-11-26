@@ -4,11 +4,11 @@
   "license": "BSD-2-Clause",
   "description": "infrastructure taxometry with Symatem",
   "scripts": {
-    "cover": "npm run build && ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests/*_test.js",
-    "test": "npm run build && mocha tests/*_test.js && markdown-doctest",
+    "cover": "npm run build && node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports tests/*_test.js",
+    "test": "npm run build && node_modules/.bin/mocha tests/*_test.js && markdown-doctest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "docs": "jsdoc2md -l off -t doc/README.hbs -f src/loader.js > README.md",
-    "build": "./node_modules/rollup/bin/rollup --output=bin/loader -c -- src/loader.js && chmod +x bin/loader"
+    "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js > README.md",
+    "build": "node_modules/rollup/bin/rollup --output={{main}} -c -- src/loader.js"
   },
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
@@ -29,7 +29,7 @@
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
-    "semantic-release": "^6.3.2",
+    "semantic-release": "^6.3.3",
     "cz-conventional-changelog": "^1.2.0",
     "jsdoc-to-markdown": "^2.0.1",
     "markdown-doctest": "^0.9.1",
@@ -41,16 +41,20 @@
     "node": ">=6.9.1"
   },
   "keywords": [],
-  "contributors": [{
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }, {
-    "name": "Alexander Meißner"
-  }],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    },
+    {
+      "name": "Alexander Meißner"
+    }
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "module": "src/loader.js"
+  "module": "src/loader.js",
+  "main": "{{main}}"
 }

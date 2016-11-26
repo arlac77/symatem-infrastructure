@@ -7,6 +7,7 @@
 [![Code Climate](https://codeclimate.com/github/arlac77/symatem-infrastructure/badges/gpa.svg)](https://codeclimate.com/github/arlac77/symatem-infrastructure)
 [![Known Vulnerabilities](https://snyk.io/test/github/arlac77/symatem-infrastructure/badge.svg)](https://snyk.io/test/github/arlac77/symatem-infrastructure)
 [![GitHub Issues](https://img.shields.io/github/issues/arlac77/symatem-infrastructure.svg?style=flat-square)](https://github.com/arlac77/symatem-infrastructure/issues)
+[![Stories in Ready](https://badge.waffle.io/arlac77/symatem-infrastructure.svg?label=ready&title=Ready)](http://waffle.io/arlac77/symatem-infrastructure)
 [![Dependency Status](https://david-dm.org/arlac77/symatem-infrastructure.svg)](https://david-dm.org/arlac77/symatem-infrastructure)
 [![devDependency Status](https://david-dm.org/arlac77/symatem-infrastructure/dev-status.svg)](https://david-dm.org/arlac77/symatem-infrastructure#info=devDependencies)
 [![docs](http://inch-ci.org/github/arlac77/symatem-infrastructure.svg?branch=master)](http://inch-ci.org/github/arlac77/symatem-infrastructure)
