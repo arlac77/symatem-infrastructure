@@ -7,22 +7,22 @@ const symatem = require('symatem'),
   fs = require('fs'),
   mkdirp = require('mkdirp'),
   zonefile = require('dns-zonefile'),
-  commander = require('commander'),
+  program = require('commander'),
   plist = require('plist');
 
-commander
+program
 //.version(module.exports.version)
-//.description('run cluster node')
+  .description('infrastructure data utility')
   .option('--store <file>', 'symatem store')
   .option('--hrl <file>', 'hrl source')
   .option('--out <dir>', 'output directory')
   .parse(process.argv);
 
-const out = commander.out || 'out';
+const out = program.out || 'out';
 
 symatem.open({
-  //store: commander.store
-}).then(connection => connection.upload(fs.readFileSync(commander.hrl))
+  //store: program.store
+}).then(connection => connection.upload(fs.readFileSync(program.hrl))
   .then(() => connection.upload('networkInterface')
     .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
       .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
