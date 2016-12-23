@@ -8,7 +8,7 @@
     "test": "npm run build && node_modules/.bin/mocha tests/*_test.js && markdown-doctest",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js > README.md",
-    "build": "node_modules/rollup/bin/rollup --output=bin/loader -c -- src/loader.js"
+    "build": "node_modules/rollup/bin/rollup --output=bin/loader -c -- src/loader.js && chmod +x bin/loader"
   },
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
@@ -34,22 +34,18 @@
     "jsdoc-to-markdown": "^2.0.1",
     "markdown-doctest": "^0.9.1",
     "rollup": "^0.38.0",
-    "rollup-plugin-commonjs": "^6.0.1",
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "rollup-plugin-commonjs": "^6.0.1"
   },
   "engines": {
     "node": ">=6.9.1"
   },
   "keywords": [],
-  "contributors": [
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    },
-    {
-      "name": "Alexander Meißner"
-    }
-  ],
+  "contributors": [{
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }, {
+    "name": "Alexander Meißner"
+  }],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
