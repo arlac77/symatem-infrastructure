@@ -24,7 +24,7 @@ process.on('uncaughtException', err => console.error(err));
 process.on('unhandledRejection', reason => console.error(reason));
 
 symatem.open({
-  //store: program.store
+  store: program.store
 }).then(connection => connection.upload(fs.readFileSync(program.hrl))
   .then(() => connection.upload('networkInterface')
     .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
