@@ -20,6 +20,9 @@ program
 
 const out = program.out || 'out';
 
+process.on('uncaughtException', err => console.error(err));
+process.on('unhandledRejection', reason => console.error(reason));
+
 symatem.open({
   //store: program.store
 }).then(connection => connection.upload(fs.readFileSync(program.hrl))
@@ -27,100 +30,99 @@ symatem.open({
     .then(result => connection.query(false, symatem.queryMask.VMV, 0, result[0], 0)
       .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
       .then(dps => Promise.all(dps))
-      .then(
-        decoded => {
-          const promises = [];
+      .then(decoded => {
+        const promises = [];
 
-          promises.push(connection.upload('network')
-            .then(result => connection.query(false, symatem.queryMask.VIM, 0, 0, result[0])
-              .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
-              .then(dps => Promise.all(dps))
-              .then(symbols => {
-                const network = symbols[0];
+        promises.push(connection.upload('network')
+          .then(result => connection.query(false, symatem.queryMask.VIM, 0, 0, result[0])
+            .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
+            .then(dps => Promise.all(dps))
+            .then(symbols => {
+              const network = symbols[0];
 
-                const zone = {
-                  '$origin': network.origin + '.',
-                  '$ttl': 3600,
-                  soa: {
-                    mname: network.primary + '.',
-                    rname: network.admin.replace(/\@/, '.') + '.',
-                    serial: '{time}',
-                    refresh: 3600,
-                    retry: 600,
-                    expire: 604800,
-                    minimum: 86400
-                  },
-                  ns: [],
-                  a: [],
-                  aaaa: [],
-                  ptr: []
-                };
-                for (let i = 0; i < decoded.length; i += 2) {
-                  const a = decoded[i + 0];
-                  const b = decoded[i + 1];
+              const zone = {
+                '$origin': network.origin + '.',
+                '$ttl': 3600,
+                soa: {
+                  mname: network.primary + '.',
+                  rname: network.admin.replace(/\@/, '.') + '.',
+                  serial: '{time}',
+                  refresh: 3600,
+                  retry: 600,
+                  expire: 604800,
+                  minimum: 86400
+                },
+                ns: [],
+                a: [],
+                aaaa: [],
+                ptr: []
+              };
+              for (let i = 0; i < decoded.length; i += 2) {
+                const a = decoded[i + 0];
+                const b = decoded[i + 1];
 
-                  if (a.name) {
-                    const name = a.name.toLowerCase();
+                if (a.name) {
+                  const name = a.name.toLowerCase();
 
-                    if (b.ipv4Address !== undefined) {
-                      zone.a.push({
-                        ip: b.ipv4Address,
-                        name: name
-                      });
+                  if (b.ipv4Address !== undefined) {
+                    zone.a.push({
+                      ip: b.ipv4Address,
+                      name: name
+                    });
 
-                      zone.ptr.push({
-                        name: b.ipv4Address,
-                        host: name
-                      });
+                    zone.ptr.push({
+                      name: b.ipv4Address,
+                      host: name
+                    });
 
+                  }
+                  if (b.ipv6Address !== undefined) {
+                    zone.aaaa.push({
+                      ip: b.ipv6Address,
+                      name: name
+                    });
+
+                    zone.ptr.push({
+                      name: b.ipv6Address,
+                      host: name
+                    });
+                  }
+
+                  if (a.manufacturer === undefined) {
+                    //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
+
+                    const json = {
+                      name: [name],
+                      en_address: [],
+                      ip_address: [],
+                      ipaddressandenetaddress: []
+                    };
+
+                    if (b.macAddress) {
+                      json.en_address.push(b.macAddress);
                     }
-                    if (b.ipv6Address !== undefined) {
-                      zone.aaaa.push({
-                        ip: b.ipv6Address,
-                        name: name
-                      });
-
-                      zone.ptr.push({
-                        name: b.ipv6Address,
-                        host: name
-                      });
-                    }
-
-                    if (a.manufacturer === undefined) {
-                      //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-
-                      const json = {
-                        name: [name],
-                        en_address: [],
-                        ip_address: [],
-                        ipaddressandenetaddress: []
-                      };
+                    if (b.ipv4Address) {
+                      json.ip_address.push(b.ipv4Address);
 
                       if (b.macAddress) {
-                        json.en_address.push(b.macAddress);
+                        json.ipaddressandenetaddress.push(`${b.ipv4Address}/${b.macAddress}`);
                       }
-                      if (b.ipv4Address) {
-                        json.ip_address.push(b.ipv4Address);
-
-                        if (b.macAddress) {
-                          json.ipaddressandenetaddress.push(`${b.ipv4Address}/${b.macAddress}`);
-                        }
-                      }
-
-                      promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
-                        `${name}.plist`, plist.build(json)));
                     }
+
+                    promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
+                      `${name}.plist`, plist.build(json)));
                   }
                 }
+              }
 
-                return writeFile(path.join(out, 'var/db'), 'a.zone', zonefile.generate(zone));
-              })));
+              return writeFile(path.join(out, 'var/db'), 'a.zone', zonefile.generate(zone));
+            })));
 
-          // Library/Server/named/db.${network}
-          // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
+        // Library/Server/named/db.${network}
+        // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
 
-          const ins =
-            `         zone "1.0.10.in-addr.arpa" IN {
+        const ins =
+          `         zone "1.0.10.in-addr.arpa" IN {
         type master;
         file "db.1.0.10.in-addr.arpa";
         allow-transfer {
@@ -142,14 +144,13 @@ zone "mf.de" IN {
 };
 `;
 
-          Promise.all(promises)
-            .then(() => {
-              connection.close();
-              console.log('done');
-            })
-            .catch(e => console.error(e));
-        }
-      )
+        Promise.all(promises)
+          .then(() => {
+            connection.close();
+            console.log('done');
+          })
+          .catch(e => console.error(e));
+      })
     )
   )
   .catch(error => console.error(error)));
