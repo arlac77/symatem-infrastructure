@@ -40,12 +40,15 @@
     "node": ">=6.9.1"
   },
   "keywords": [],
-  "contributors": [{
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }, {
-    "name": "Alexander Meißner"
-  }],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    },
+    {
+      "name": "Alexander Meißner"
+    }
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
