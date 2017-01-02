@@ -3,12 +3,15 @@
   "version": "0.0.0-semantic-release",
   "license": "BSD-2-Clause",
   "description": "infrastructure taxometry with Symatem",
+  "bin": {
+    "sym-infra-util": "bin/sym-infra-util"
+  },
   "scripts": {
     "cover": "npm run prepublish && istanbul cover node_modules/.bin/_mocha -- -u exports tests/*_test.js",
     "test": "mocha tests/*_test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js >README.md",
-    "prepublish": "rollup --output=bin/loader -c -- src/loader.js && chmod +x bin/loader",
+    "prepublish": "rollup --output=bin/sym-infra-util -c -- src/loader.js && chmod +x bin/sym-infra-util",
     "pretest": "npm run prepublish",
     "posttest": "markdown-doctest"
   },
@@ -42,15 +45,12 @@
     "node": ">=6.9.2"
   },
   "keywords": [],
-  "contributors": [
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    },
-    {
-      "name": "Alexander Meißner"
-    }
-  ],
+  "contributors": [{
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }, {
+    "name": "Alexander Meißner"
+  }],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
