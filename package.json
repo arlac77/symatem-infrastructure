@@ -42,15 +42,18 @@
     "rollup-plugin-commonjs": "^7.0.0"
   },
   "engines": {
-    "node": ">=6.9.2"
+    "node": ">=6.9.3"
   },
   "keywords": [],
-  "contributors": [{
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }, {
-    "name": "Alexander Meißner"
-  }],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    },
+    {
+      "name": "Alexander Meißner"
+    }
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
