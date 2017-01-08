@@ -10,9 +10,11 @@ const symatem = require('symatem'),
   program = require('commander'),
   plist = require('plist');
 
+//require('pkginfo')(module, 'version');
+
 program
-//.version(module.exports.version)
   .description('infrastructure data utility')
+  //  .version(module.exports.version)
   .option('--store <file>', 'symatem store')
   .option('--hrl <file>', 'hrl source')
   .option('--out <dir>', 'output directory')

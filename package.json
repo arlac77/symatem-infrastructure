@@ -11,7 +11,7 @@
     "test": "mocha tests/*_test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js >README.md",
-    "prepublish": "rollup --output=bin/sym-infra-util -c -- src/loader.js && chmod +x bin/sym-infra-util",
+    "prepublish": "rollup --output=bin/sym-infra-util -c -- src/util.js && chmod +x bin/sym-infra-util",
     "pretest": "npm run prepublish",
     "posttest": "markdown-doctest"
   },
@@ -27,6 +27,7 @@
     "commander": "^2.9.0",
     "dns-zonefile": "^0.2.0",
     "mkdirp": "^0.5.1",
+    "pkginfo": "^0.4.0",
     "plist": "^2.0.1",
     "symatem": "^1.16.4"
   },
@@ -45,20 +46,17 @@
     "node": ">=6.9.3"
   },
   "keywords": [],
-  "contributors": [
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    },
-    {
-      "name": "Alexander Meißner"
-    }
-  ],
+  "contributors": [{
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }, {
+    "name": "Alexander Meißner"
+  }],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "module": "src/loader.js",
-  "main": "bin/loader"
+  "module": "src/util.js",
+  "main": "src/util.js"
 }

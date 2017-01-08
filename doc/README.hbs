@@ -15,3 +15,11 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # symatem-infrastructure
+-------------------
+
+infrastructure taxometry with Symatem
+
+
+```shell
+sym-infra-util --store a.store --out dist --hrl assets.sym
+```
