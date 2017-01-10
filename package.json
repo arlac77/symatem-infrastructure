@@ -7,13 +7,14 @@
     "sym-infra-util": "bin/sym-infra-util"
   },
   "scripts": {
-    "cover": "npm run prepublish && istanbul cover node_modules/.bin/_mocha -- -u exports tests/*_test.js",
+    "cover": "nyc npm test",
     "test": "mocha tests/*_test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js >README.md",
     "prepublish": "rollup --output=bin/sym-infra-util -c -- src/util.js && chmod +x bin/sym-infra-util",
     "pretest": "npm run prepublish",
-    "posttest": "markdown-doctest"
+    "posttest": "markdown-doctest",
+    "precover": "npm run prepublish"
   },
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
@@ -33,30 +34,42 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "semantic-release": "^6.3.5",
     "cz-conventional-changelog": "^1.2.0",
     "jsdoc-to-markdown": "^2.0.1",
     "markdown-doctest": "^0.9.1",
     "rollup": "^0.41.1",
-    "rollup-plugin-commonjs": "^7.0.0"
+    "rollup-plugin-commonjs": "^7.0.0",
+    "nyc": "^10.0.0"
   },
   "engines": {
-    "node": ">=6.9.3"
+    "node": ">=6.9.4"
   },
   "keywords": [],
-  "contributors": [{
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }, {
-    "name": "Alexander Meißner"
-  }],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    },
+    {
+      "name": "Alexander Meißner"
+    }
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "module": "src/util.js",
-  "main": "src/util.js"
+  "main": "src/util.js",
+  "nyc": {
+    "include": [
+      "dist/**/*.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "report-dir": "./coverage"
+  }
 }
