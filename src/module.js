@@ -50,6 +50,8 @@ symatem.open({
             .then(dps => Promise.all(dps))
             .then(([network]) => {
 
+              console.log(network);
+
               const zone = {
                 '$origin': network.origin + '.',
                 '$ttl': 3600,
@@ -73,28 +75,29 @@ symatem.open({
 
                 if (a.name) {
                   const name = a.name.toLowerCase();
+                  const fqdn = `${name}.${network.origin}`;
 
                   if (b.ipv4Address !== undefined) {
                     zone.a.push({
                       ip: b.ipv4Address,
-                      name: name
+                      name: fqdn
                     });
 
                     zone.ptr.push({
                       name: b.ipv4Address,
-                      host: name
+                      host: fqdn
                     });
 
                   }
                   if (b.ipv6Address !== undefined) {
                     zone.aaaa.push({
                       ip: b.ipv6Address,
-                      name: name
+                      name: fqdn
                     });
 
                     zone.ptr.push({
                       name: b.ipv6Address,
-                      host: name
+                      host: fqdn
                     });
                   }
 
