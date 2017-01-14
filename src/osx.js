@@ -13,6 +13,10 @@ export function machinePList(name, node) {
     ipaddressandenetaddress: []
   };
 
+  if (node.uuid) {
+    json.generateduid = node.uuid;
+  }
+
   if (node.macAddress) {
     json.en_address.push(node.macAddress);
   }
