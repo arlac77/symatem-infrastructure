@@ -39,8 +39,7 @@ symatem.open({
           .then(result => connection.query(false, symatem.queryMask.VIM, 0, 0, result[0])
             .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
             .then(dps => Promise.all(dps))
-            .then(symbols => {
-              const network = symbols[0];
+            .then(([network]) => {
 
               const zone = {
                 '$origin': network.origin + '.',
@@ -160,7 +159,7 @@ zone "mf.de" IN {
 
 function writeFile(dir, name, encoding) {
   return new Promise((fullfill, reject) => {
-    mkdirp(dir, (error) => {
+    mkdirp(dir, error => {
       if (error) {
         reject(error);
         return;
