@@ -10,6 +10,8 @@ const symatem = require('symatem'),
   program = require('commander'),
   plist = require('plist');
 
+import { machinePList } from './osx';
+
 //require('pkginfo')(module, 'version');
 
 program
@@ -91,27 +93,8 @@ symatem.open({
 
                   if (a.manufacturer === undefined) {
                     //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-
-                    const json = {
-                      name: [name],
-                      en_address: [],
-                      ip_address: [],
-                      ipaddressandenetaddress: []
-                    };
-
-                    if (b.macAddress) {
-                      json.en_address.push(b.macAddress);
-                    }
-                    if (b.ipv4Address) {
-                      json.ip_address.push(b.ipv4Address);
-
-                      if (b.macAddress) {
-                        json.ipaddressandenetaddress.push(`${b.ipv4Address}/${b.macAddress}`);
-                      }
-                    }
-
                     promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
-                      `${name}.plist`, plist.build(json)));
+                      `${name}.plist`, plist.build(machinePList(name,b))));
                   }
                 }
               }
@@ -150,7 +133,7 @@ zone "mf.de" IN {
             connection.close();
             console.log('done');
           })
-          .catch(e => console.error(e));
+          .catch(e => { connection.close(); console.error(e); });
       })
     )
   )
