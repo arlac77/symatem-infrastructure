@@ -5,19 +5,17 @@
 const symatem = require('symatem'),
   path = require('path'),
   fs = require('fs'),
-  zonefile = require('dns-zonefile'),
-  program = require('commander'),
-  plist = require('plist');
+  program = require('commander');
 
 import {
-  machinePList
+  generateComputers
 }
 from './osx';
 
 import {
-  writeFile
+  generateZones
 }
-from './util';
+from './dns';
 
 //require('pkginfo')(module, 'version');
 
@@ -48,95 +46,10 @@ symatem.open({
           .then(result => connection.query(false, symatem.queryMask.VIM, 0, 0, result[0])
             .then(symbols => symbols.map(symbol => connection.decodeSymbolWithCache(symbol)))
             .then(dps => Promise.all(dps))
-            .then(([network]) => {
-
-              console.log(network);
-
-              const zone = {
-                '$origin': network.origin + '.',
-                '$ttl': 3600,
-                soa: {
-                  mname: network.primary + '.',
-                  rname: network.admin.replace(/\@/, '.') + '.',
-                  serial: '{time}',
-                  refresh: 3600,
-                  retry: 600,
-                  expire: 604800,
-                  minimum: 86400
-                },
-                ns: [],
-                a: [],
-                aaaa: [],
-                ptr: []
-              };
-              for (let i = 0; i < decoded.length; i += 2) {
-                const a = decoded[i + 0];
-                const b = decoded[i + 1];
-
-                if (a.name) {
-                  const name = a.name.toLowerCase();
-                  const fqdn = `${name}.${network.origin}`;
-
-                  if (b.ipv4Address !== undefined) {
-                    zone.a.push({
-                      ip: b.ipv4Address,
-                      name: fqdn
-                    });
-
-                    zone.ptr.push({
-                      name: b.ipv4Address,
-                      host: fqdn
-                    });
-
-                  }
-                  if (b.ipv6Address !== undefined) {
-                    zone.aaaa.push({
-                      ip: b.ipv6Address,
-                      name: fqdn
-                    });
-
-                    zone.ptr.push({
-                      name: b.ipv6Address,
-                      host: fqdn
-                    });
-                  }
-
-                  if (a.manufacturer === undefined) {
-                    //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-                    promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
-                      `${name}.plist`, plist.build(machinePList(name, b))));
-                  }
-                }
-              }
-
-              return writeFile(path.join(out, 'var/db'), 'a.zone', zonefile.generate(zone));
-            })));
-
-        // Library/Server/named/db.${network}
-        // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
-
-        const ins =
-          `         zone "1.0.10.in-addr.arpa" IN {
-        type master;
-        file "db.1.0.10.in-addr.arpa";
-        allow-transfer {
-                none;
-        };
-        allow-update {
-                none;
-        };
-};
-zone "mf.de" IN {
-        type master;
-        file "db.mf.de";
-        allow-transfer {
-                none;
-        };
-        allow-update {
-                none;
-        };
-};
-`;
+            .then(([network]) => Promise.all([
+              generateComputers(out, decoded, network),
+              generateZones(out, decoded, network)
+            ]))));
 
         Promise.all(promises)
           .then(() => {

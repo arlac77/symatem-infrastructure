@@ -2,10 +2,18 @@
 
 'use strict';
 
+const plist = require('plist'),
+  path = require('path');
+
+import {
+  writeFile
+}
+from './util';
+
 /**
- * generate object suitable as source for plist machine record
+ * generate object suitable as source for plist computer record
  */
-export function machinePList(name, node) {
+export function computerPList(name, node) {
   const json = {
     name: [name],
     en_address: [],
@@ -29,4 +37,27 @@ export function machinePList(name, node) {
   }
 
   return json;
+}
+
+
+export function generateComputers(out, decoded, network) {
+
+  const promises = [];
+
+  for (let i = 0; i < decoded.length; i += 2) {
+    const a = decoded[i + 0];
+
+    if (a.name) {
+      const name = a.name.toLowerCase();
+      const b = decoded[i + 1];
+
+      if (a.manufacturer === undefined) {
+        //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
+        promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
+          `${name}.plist`, plist.build(computerPList(name, b))));
+      }
+    }
+  }
+
+  return Promise.all(promises);
 }
