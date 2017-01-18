@@ -41,7 +41,7 @@
     "markdown-doctest": "^0.9.1",
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^7.0.0",
-    "nyc": "^10.0.0"
+    "nyc": "^10.1.0"
   },
   "engines": {
     "node": ">=6.9.4"
