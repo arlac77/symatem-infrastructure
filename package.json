@@ -25,10 +25,9 @@
     "url": "https://github.com/arlac77/symatem-infrastructure.git"
   },
   "dependencies": {
-    "commander": "^2.9.0",
+    "caporal": "^0.3.0",
     "dns-zonefile": "^0.2.0",
     "mkdirp": "^0.5.1",
-    "pkginfo": "^0.4.0",
     "plist": "^2.0.1",
     "symatem": "^1.16.4"
   },
