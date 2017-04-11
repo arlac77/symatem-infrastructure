@@ -10,9 +10,16 @@ const path = require('path'),
   symatem = require('symatem');
 
 
-test('connection problems', t => {
-  symatem.open({
+test('connection problems', async(t) => {
+  //t.plan(1);
+  const o = await symatem.open({
       store: path.join(__dirname, 'a.store')
     })
-    .catch(e => t.deepEqual(e.code, 'ECONNREFUSED'));
+    .catch(e => {
+      //t.pass();
+      t.deepEqual(e.code, 'ECONNREFUSED');
+    });
+
+  console.log(`BBB ${JSON.stringify(o)}`);
+
 });
