@@ -37,13 +37,13 @@
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
     "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
-    "rollup": "^0.41.5",
+    "nyc": "^10.2.0",
+    "rollup": "^0.41.6",
     "rollup-plugin-commonjs": "^8.0.2",
     "semantic-release": "^6.3.6"
   },
   "engines": {
-    "node": ">=7.7.2"
+    "node": ">=7.9.0"
   },
   "keywords": [],
   "contributors": [
@@ -70,5 +70,10 @@
       "lcov"
     ],
     "report-dir": "./coverage"
+  },
+  "template": {
+    "repository": {
+      "url": "https://github.com/Kronos-Tools/npm-package-template.git"
+    }
   }
 }
