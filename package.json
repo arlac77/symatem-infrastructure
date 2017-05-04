@@ -10,7 +10,7 @@
     "cover": "nyc ava",
     "test": "ava",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "docs": "jsdoc2md -l off -t doc/README.hbs -f src/*.js >README.md",
+    "docs": "jsdoc2md --configure doc/jsdoc.json -l off -t doc/README.hbs -f src/*.js >README.md",
     "prepublish": "rollup --output=bin/sym-infra-util -c -- src/module.js && chmod +x bin/sym-infra-util",
     "pretest": "rollup -c rollup.config.test.js",
     "posttest": "markdown-doctest",
@@ -42,10 +42,12 @@
     "ava": "^0.19.1",
     "babel-preset-es2015-rollup": "^3.0.0",
     "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-multi-entry": "^2.0.1"
+    "rollup-plugin-multi-entry": "^2.0.1",
+    "jsdoc-babel": "^0.3.0",
+    "babel-plugin-transform-async-generator-functions": "^6.24.1"
   },
   "engines": {
-    "node": ">=7.9.0"
+    "node": ">=7.10.0"
   },
   "keywords": [],
   "contributors": [
