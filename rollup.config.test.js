@@ -9,7 +9,7 @@ export default {
   plugins: [
     babel({
       babelrc: false,
-      presets: ['es2015-rollup'],
+      presets: [],
       exclude: 'node_modules/**'
     }),
     multiEntry()

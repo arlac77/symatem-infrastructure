@@ -1,26 +1,13 @@
+const path = require('path');
+const fs = require('fs');
+const makeDir = require('make-dir');
 
-/* jslint node: true, esnext: true */
+const {
+  promisify
+} = require('util');
 
-'use strict';
+const _writeFile = promisify(fs.writeFile);
 
-const path = require('path'),
-fs = require('fs'),
-mkdirp = require('mkdirp');
-
-export function writeFile(dir, name, encoding) {
-  return new Promise((fullfill, reject) => {
-    mkdirp(dir, error => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      fs.writeFile(path.join(dir, name), encoding, error => {
-        if (error) {
-          reject(error);
-        } else {
-          fullfill();
-        }
-      });
-    });
-  });
+export function writeFile(dir, name, data, encoding) {
+  makeDir(dir).then(path => _writeFile(path.join(dir, name), data, encoding));
 }

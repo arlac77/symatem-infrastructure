@@ -27,7 +27,7 @@
   "dependencies": {
     "caporal": "^0.6.0",
     "dns-zonefile": "^0.2.2",
-    "mkdirp": "^0.5.1",
+    "make-dir": "^1.0.0",
     "plist": "^2.0.1",
     "symatem": "^1.16.4"
   },
@@ -40,7 +40,6 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "semantic-release": "^6.3.6",
     "ava": "^0.19.1",
-    "babel-preset-es2015-rollup": "^3.0.0",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-multi-entry": "^2.0.1",
     "jsdoc-babel": "^0.3.0",

@@ -10,7 +10,6 @@ import {
 }
 from './util';
 
-
 export function generateZones(out, decoded, network) {
   const origin = network.origin.replace(/\.$/, '');
 
