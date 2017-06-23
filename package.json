@@ -48,7 +48,9 @@
   "engines": {
     "node": ">=8.1.2"
   },
-  "keywords": [],
+  "keywords": [
+    null
+  ],
   "contributors": [
     {
       "name": "Markus Felten",
