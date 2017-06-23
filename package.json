@@ -48,8 +48,7 @@
   "engines": {
     "node": ">=8.1.2"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "contributors": [
     {
       "name": "Markus Felten",
@@ -63,12 +62,13 @@
   "main": "src/module.js",
   "nyc": {
     "include": [
-      "dist/**/*.js"
+      "build/test-bundle.js",
+      "src/**/*.js"
     ],
     "reporter": [
       "lcov"
     ],
-    "report-dir": "./coverage"
+    "report-dir": "./build/coverage"
   },
   "template": {
     "repository": {

@@ -1,11 +1,12 @@
-/* jslint node: true, esnext: true */
-'use strict';
-
 import commonjs from 'rollup-plugin-commonjs';
+import pkg from './package.json';
 
 export default {
   banner: '#!/usr/bin/env node',
-  format: 'cjs',
+  targets: [{
+    dest: pkg.bin['sym-infra-util'],
+    format: 'cjs'
+  }],
   plugins: [commonjs()],
   external: ['symatem', 'plist', 'commander', 'dns-zonefile', 'mkdirp', 'path', 'fs', 'pkginfo']
 };
