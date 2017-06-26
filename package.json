@@ -34,7 +34,7 @@
   "devDependencies": {
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
-    "nyc": "^11.0.2",
+    "nyc": "^11.0.3",
     "rollup": "^0.43.0",
     "rollup-plugin-commonjs": "^8.0.2",
     "semantic-release": "^6.3.6",
@@ -48,7 +48,9 @@
   "engines": {
     "node": ">=8.1.2"
   },
-  "keywords": [],
+  "keywords": [
+    null
+  ],
   "contributors": [
     {
       "name": "Markus Felten",
