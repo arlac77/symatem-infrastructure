@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
   },
-  "homepage": "https://github.com/arlac77/symatem-infrastructure.git#readme",
+  "homepage": "https://github.com/arlac77/symatem-infrastructure#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arlac77/symatem-infrastructure.git"
