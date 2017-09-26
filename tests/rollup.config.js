@@ -9,8 +9,7 @@ export default {
       babelrc: false,
       presets: ['stage-3'],
       exclude: 'node_modules/**'
-    }),
-    multiEntry()
+    })
   ],
 
   output: {
