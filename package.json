@@ -14,7 +14,7 @@
     "pretest": "rollup -c tests/rollup.config.js",
     "posttest": "npm run prepare && markdown-doctest",
     "precover": "rollup -c tests/rollup.config.js",
-    "prepare": "rollup -c -- src/module.js"
+    "prepare": "rollup -c"
   },
   "bugs": {
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
@@ -34,19 +34,17 @@
   "devDependencies": {
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
-    "nyc": "^11.1.0",
-    "rollup": "^0.47.6",
-    "rollup-plugin-commonjs": "^8.1.0",
-    "semantic-release": "^8.0.0",
+    "nyc": "^11.2.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "semantic-release": "^8.0.3",
     "ava": "^0.22.0",
     "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-multi-entry": "^2.0.1",
     "jsdoc-babel": "^0.3.0",
-    "xo": "^0.19.0",
-    "babel-preset-stage-3": "^6.24.1"
+    "xo": "^0.19.0"
   },
   "engines": {
-    "node": ">=8.4.0"
+    "node": ">=8.5.0"
   },
   "keywords": [],
   "contributors": [
