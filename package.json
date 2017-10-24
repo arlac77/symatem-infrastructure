@@ -34,10 +34,10 @@
   "devDependencies": {
     "jsdoc-to-markdown": "^3.0.0",
     "markdown-doctest": "^0.9.1",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "rollup": "^0.50.0",
     "rollup-plugin-commonjs": "^8.2.4",
-    "semantic-release": "^8.2.1",
+    "semantic-release": "^8.2.2",
     "ava": "^0.23.0",
     "rollup-plugin-babel": "^3.0.2",
     "jsdoc-babel": "^0.3.0",
