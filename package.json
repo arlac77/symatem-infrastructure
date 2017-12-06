@@ -32,17 +32,18 @@
     "symatem": "^1.16.4"
   },
   "devDependencies": {
+    "ava": "^0.24.0",
+    "babel-preset-env": "^1.6.1",
+    "jsdoc-babel": "^0.3.0",
     "jsdoc-to-markdown": "^3.0.2",
     "markdown-doctest": "^0.9.1",
     "nyc": "^11.4.0",
     "rollup": "^0.52.1",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "semantic-release": "^10.0.1",
-    "ava": "^0.24.0",
     "rollup-plugin-babel": "^3.0.2",
-    "jsdoc-babel": "^0.3.0",
-    "xo": "^0.19.0",
-    "babel-preset-env": "^1.6.1"
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-multi-entry": "^2.0.2",
+    "semantic-release": "^10.0.1",
+    "xo": "^0.19.0"
   },
   "engines": {
     "node": ">=8.9.1"
@@ -59,30 +60,32 @@
   ],
   "module": "src/module.js",
   "main": "src/module.js",
-  "nyc": {
-    "include": [
-      "build/test-bundle.js",
-      "src/**/*.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
-    "report-dir": "./build/coverage"
-  },
   "template": {
     "repository": {
       "url": "https://github.com/arlac77/npm-package-template.git"
     }
   },
+  "xo": {
+    "space": true
+  },
   "ava": {
     "files": [
-      "build/test-bundle.js"
+      "build/*-test.js"
+    ],
+    "presets": [
+      "env"
     ],
     "require": [
       "babel-register"
     ]
   },
-  "xo": {
-    "space": true
+  "nyc": {
+    "include": [
+      "build/*-test.js"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "report-dir": "./build/coverage"
   }
 }
