@@ -1,21 +1,14 @@
-/* jslint node: true, esnext: true */
-
-'use strict';
-
 const zonefile = require('dns-zonefile'),
   path = require('path');
 
-import {
-  writeFile
-}
-from './util';
+import { writeFile } from './util';
 
 export function generateZones(out, decoded, network) {
   const origin = network.origin.replace(/\.$/, '');
 
   const zone = {
-    '$origin': origin + '.',
-    '$ttl': 3600,
+    $origin: origin + '.',
+    $ttl: 3600,
     soa: {
       mname: network.primary + '.',
       rname: network.admin.replace(/\@/, '.') + '.',
@@ -51,7 +44,6 @@ export function generateZones(out, decoded, network) {
           name: b.ipv4Address,
           host: fqdn
         });
-
       }
       if (b.ipv6Address !== undefined) {
         zone.aaaa.push({
@@ -69,8 +61,7 @@ export function generateZones(out, decoded, network) {
 
   // Library/Server/named/db.${reverse_subnet}.in-addr.arpa
 
-  const ins =
-    `         zone "1.0.10.in-addr.arpa" IN {
+  const ins = `         zone "1.0.10.in-addr.arpa" IN {
   type master;
   file "db.1.0.10.in-addr.arpa";
   allow-transfer {
@@ -92,6 +83,9 @@ zone "mf.de" IN {
 };
 `;
 
-  return writeFile(path.join(out, 'Library/Server/named'), `db.${origin}`, zonefile.generate(
-    zone));
+  return writeFile(
+    path.join(out, 'Library/Server/named'),
+    `db.${origin}`,
+    zonefile.generate(zone)
+  );
 }

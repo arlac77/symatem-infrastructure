@@ -1,14 +1,7 @@
-/* jslint node: true, esnext: true */
-
-'use strict';
-
 const plist = require('plist'),
   path = require('path');
 
-import {
-  writeFile
-}
-from './util';
+import { writeFile } from './util';
 
 /**
  * generate object suitable as source for plist computer record
@@ -32,16 +25,16 @@ export function computerPList(name, node) {
     json.ip_address.push(node.ipv4Address);
 
     if (node.macAddress) {
-      json.ipaddressandenetaddress.push(`${node.ipv4Address}/${node.macAddress}`);
+      json.ipaddressandenetaddress.push(
+        `${node.ipv4Address}/${node.macAddress}`
+      );
     }
   }
 
   return json;
 }
 
-
 export function generateComputers(out, decoded, network) {
-
   const promises = [];
 
   for (let i = 0; i < decoded.length; i += 2) {
@@ -53,8 +46,13 @@ export function generateComputers(out, decoded, network) {
 
       if (a.manufacturer === undefined) {
         //console.log(`${JSON.stringify(a)} <> ${JSON.stringify(b)}`);
-        promises.push(writeFile(path.join(out, 'var/db/dslocal/nodes/Default/computers'),
-          `${name}.plist`, plist.build(computerPList(name, b))));
+        promises.push(
+          writeFile(
+            path.join(out, 'var/db/dslocal/nodes/Default/computers'),
+            `${name}.plist`,
+            plist.build(computerPList(name, b))
+          )
+        );
       }
     }
   }

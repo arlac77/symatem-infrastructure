@@ -1,4 +1,5 @@
 import commonjs from 'rollup-plugin-commonjs';
+import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 export default {
@@ -7,7 +8,16 @@ export default {
     format: 'cjs',
     banner: '#!/usr/bin/env node'
   },
-  plugins: [commonjs()],
-  external: ['symatem', 'plist', 'commander', 'dns-zonefile', 'mkdirp', 'path', 'fs', 'pkginfo'],
+  plugins: [commonjs(), json()],
+  external: [
+    'symatem',
+    'plist',
+    'commander',
+    'dns-zonefile',
+    'mkdirp',
+    'path',
+    'fs',
+    'pkginfo'
+  ],
   input: pkg.module
 };
