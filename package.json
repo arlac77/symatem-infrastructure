@@ -39,7 +39,6 @@
     "markdown-doctest": "^0.9.1",
     "nyc": "^11.4.0",
     "rollup": "^0.52.1",
-    "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-multi-entry": "^2.0.2",
