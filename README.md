@@ -18,10 +18,24 @@
 
 # symatem-infrastructure
 -------------------
-
 infrastructure taxometry with Symatem
 
 
 ```shell
 sym-infra-util --store a.store --out dist --hrl assets.sym
 ```
+
+
+# API
+
+# install
+
+With [npm](http://npmjs.org) do:
+
+```shell
+npm install {{name}}
+```
+
+# license
+
+BSD-2-Clause
