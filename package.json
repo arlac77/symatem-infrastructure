@@ -30,7 +30,8 @@
     "dns-zonefile": "^0.2.2",
     "make-dir": "^1.0.0",
     "plist": "^2.0.1",
-    "symatem": "^1.16.4"
+    "symatem": "^1.16.4",
+    "SymatemJS": "https://github.com/Symatem/SymatemJS.git"
   },
   "devDependencies": {
     "ava": "^0.24.0",

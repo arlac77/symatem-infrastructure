@@ -1,6 +1,8 @@
 import { version } from '../package.json';
 import { generateComputers } from './osx';
 import { generateZones } from './dns';
+import NativeBackend from 'SymatemJS';
+import { migrate } from './migrate';
 
 const symatem = require('symatem'),
   path = require('path'),
@@ -27,6 +29,26 @@ program
       });
 
       await connection.upload(fs.readFileSync(options.hrl));
+
+      const sb = new NativeBackend();
+
+      const namespaceSymbol = sb.createSymbol(
+        NativeBackend.identityOfSymbol(NativeBackend.symbolByName.Namespaces)
+      );
+
+      await migrate(
+        connection,
+        sb,
+        NativeBackend.identityOfSymbol(namespaceSymbol)
+      );
+
+      console.log(sb.encodeJson());
+
+      fs.writeFileSync(
+        'a.json',
+        /*JSON.stringify(*/ sb.encodeJson(), //undefined, 2),
+        { encoding: 'utf8' }
+      );
 
       let result = connection.upload('networkInterface');
 
@@ -66,7 +88,9 @@ program
       connection.close();
       logger.log('done');
     } catch (error) {
-      connection.close();
+      if (connection !== undefined) {
+        connection.close();
+      }
 
       logger.error(error);
     }

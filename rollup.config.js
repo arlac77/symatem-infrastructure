@@ -17,7 +17,8 @@ export default {
     'mkdirp',
     'path',
     'fs',
-    'pkginfo'
+    'pkginfo',
+    'SymatemJS'
   ],
   input: pkg.module
 };
