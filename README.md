@@ -33,6 +33,7 @@ sym-infra-util --store a.store --out dist --hrl assets.sym
 ### Table of Contents
 
 -   [computerPList](#computerplist)
+-   [migrate](#migrate)
 
 ## computerPList
 
@@ -42,6 +43,14 @@ generate object suitable as source for plist computer record
 
 -   `name`  
 -   `node`  
+
+## migrate
+
+**Parameters**
+
+-   `connection`  
+-   `sb`  
+-   `namespace`  
 
 # install
 
