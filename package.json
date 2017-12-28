@@ -1,8 +1,20 @@
 {
   "name": "symatem-infrastructure",
   "version": "0.0.0-semantic-release",
-  "license": "BSD-2-Clause",
+  "main": "src/module.js",
+  "module": "src/module.js",
   "description": "infrastructure taxometry with Symatem",
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    },
+    {
+      "name": "Alexander Meißner"
+    }
+  ],
+  "license": "BSD-2-Clause",
   "bin": {
     "sym-infra-util": "bin/sym-infra-util"
   },
@@ -16,14 +28,6 @@
     "precover": "rollup -c tests/rollup.config.js",
     "prepare": "rollup -c",
     "lint": "documentation lint src/module.js"
-  },
-  "bugs": {
-    "url": "https://github.com/arlac77/symatem-infrastructure/issues"
-  },
-  "homepage": "https://github.com/arlac77/symatem-infrastructure#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/arlac77/symatem-infrastructure.git"
   },
   "dependencies": {
     "caporal": "^0.9.0",
@@ -48,26 +52,14 @@
   "engines": {
     "node": ">=8.9.3"
   },
-  "keywords": [],
-  "contributors": [
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    },
-    {
-      "name": "Alexander Meißner"
-    }
-  ],
-  "module": "src/module.js",
-  "main": "src/module.js",
-  "template": {
-    "repository": {
-      "url": "https://github.com/arlac77/npm-package-template.git"
-    }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arlac77/symatem-infrastructure.git"
   },
-  "xo": {
-    "space": true
+  "bugs": {
+    "url": "https://github.com/arlac77/symatem-infrastructure/issues"
   },
+  "homepage": "https://github.com/arlac77/symatem-infrastructure#readme",
   "ava": {
     "files": [
       "build/*-test.js"
@@ -87,5 +79,13 @@
       "lcov"
     ],
     "report-dir": "./build/coverage"
+  },
+  "xo": {
+    "space": true
+  },
+  "template": {
+    "repository": {
+      "url": "https://github.com/arlac77/npm-package-template.git"
+    }
   }
 }
