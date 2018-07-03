@@ -29,9 +29,10 @@
     "pretest": "rollup -c tests/rollup.config.js",
     "posttest": "npm run prepare && markdown-doctest",
     "precover": "rollup -c tests/rollup.config.js",
-    "prepare": "rollup -c",
+    "prepare": "npm run snyk-protect; rollup -c",
     "lint": "documentation lint src/module.js",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
@@ -39,7 +40,8 @@
     "dns-zonefile": "^0.2.2",
     "make-dir": "^1.2.0",
     "plist": "^3.0.0",
-    "symatem": "^1.16.4"
+    "symatem": "^1.16.4",
+    "snyk": "^1.88.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
@@ -91,5 +93,6 @@
     "repository": {
       "url": "https://github.com/arlac77/npm-package-template.git"
     }
-  }
+  },
+  "snyk": true
 }
