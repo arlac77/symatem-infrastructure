@@ -13,6 +13,7 @@ export default {
   output: {
     format: 'cjs',
     file: 'build/bundle-test.js',
-    sourcemap: true
+    sourcemap: true,
+    interop: false
   }
 };
