@@ -33,7 +33,7 @@
   "dependencies": {
     "caporal": "^1.0.0",
     "dns-zonefile": "^0.2.2",
-    "make-dir": "^1.2.0",
+    "make-dir": "^2.1.0",
     "plist": "^3.0.0",
     "symatem": "^1.16.4",
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git"
