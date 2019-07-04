@@ -28,14 +28,17 @@
     "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
     "pretest": "rollup -c tests/rollup.config.js",
-    "test": "ava"
+    "test": "ava",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "caporal": "^1.0.0",
     "dns-zonefile": "^0.2.2",
     "plist": "^3.0.0",
     "symatem": "^1.16.4",
-    "SymatemJS": "https://github.com/Symatem/SymatemJS.git"
+    "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "ava": "^2.1.0",
@@ -80,5 +83,6 @@
     "repository": {
       "url": "https://github.com/arlac77/npm-package-template.git"
     }
-  }
+  },
+  "snyk": true
 }
