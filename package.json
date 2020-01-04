@@ -31,15 +31,15 @@
     "test": "ava"
   },
   "dependencies": {
+    "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
     "caporal": "^1.0.0",
     "dns-zonefile": "^0.2.2",
     "plist": "^3.0.0",
-    "symatem": "^1.16.4",
-    "SymatemJS": "https://github.com/Symatem/SymatemJS.git"
+    "symatem": "^1.16.4"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.1",
-    "@rollup/plugin-node-resolve": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^6.1.0",
     "acorn-class-fields": "https://github.com/arlac77/acorn-class-fields.git",
     "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
@@ -47,7 +47,7 @@
     "documentation": "^12.1.4",
     "esm": "^3.2.25",
     "markdown-doctest": "^1.0.0",
-    "rollup": "^1.27.14",
+    "rollup": "^1.28.0",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.2",
     "semantic-release": "^15.14.0"
