@@ -1,7 +1,4 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Build Status](https://secure.travis-ci.org/arlac77/symatem-infrastructure.png)](http://travis-ci.org/arlac77/symatem-infrastructure)
-[![codecov.io](http://codecov.io/github/arlac77/symatem-infrastructure/coverage.svg?branch=master)](http://codecov.io/github/arlac77/symatem-infrastructure?branch=master)
-[![Coverage Status](https://coveralls.io/repos/arlac77/symatem-infrastructure/badge.svg)](https://coveralls.io/r/arlac77/symatem-infrastructure)
 [![Known Vulnerabilities](https://snyk.io/test/github/arlac77/symatem-infrastructure/badge.svg)](https://snyk.io/test/github/arlac77/symatem-infrastructure)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![npm](https://img.shields.io/npm/v/symatem-infrastructure.svg)](https://www.npmjs.com/package/symatem-infrastructure)
@@ -11,6 +8,9 @@
 [![minified size](https://badgen.net/bundlephobia/min/symatem-infrastructure)](https://bundlephobia.com/result?p=symatem-infrastructure)
 [![downloads](http://img.shields.io/npm/dm/symatem-infrastructure.svg?style=flat-square)](https://npmjs.org/package/symatem-infrastructure)
 [![GitHub Issues](https://img.shields.io/github/issues/arlac77/symatem-infrastructure.svg?style=flat-square)](https://github.com/arlac77/symatem-infrastructure/issues)
+[![Build Status](https://secure.travis-ci.org/arlac77/symatem-infrastructure.png)](http://travis-ci.org/arlac77/symatem-infrastructure)
+[![codecov.io](http://codecov.io/github/arlac77/symatem-infrastructure/coverage.svg?branch=master)](http://codecov.io/github/arlac77/symatem-infrastructure?branch=master)
+[![Coverage Status](https://coveralls.io/repos/arlac77/symatem-infrastructure/badge.svg)](https://coveralls.io/r/arlac77/symatem-infrastructure)
 
 # symatem-infrastructure
 
