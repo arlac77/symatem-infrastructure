@@ -37,8 +37,8 @@
     "symatem": "^1.16.4"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.1",
-    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.0",
     "acorn-class-fields": "https://github.com/arlac77/acorn-class-fields.git",
     "ava": "^2.4.0",
     "builtin-modules": "^3.1.0",
@@ -49,7 +49,7 @@
     "rollup": "^1.31.0",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-executable": "^1.5.2",
-    "semantic-release": "^17.0.1"
+    "semantic-release": "^17.0.2"
   },
   "engines": {
     "node": ">=12.14.1"
