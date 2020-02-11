@@ -21,12 +21,12 @@
     "sym-infra-util": "bin/sym-infra-util"
   },
   "scripts": {
-    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
+    "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/module.js --section=API",
     "lint": "documentation lint src/module.js",
     "prepare": "rollup -c",
     "pretest": "rollup -c tests/rollup.config.js",
-    "test": "ava"
+    "test": "ava && ava --timeout 2m"
   },
   "dependencies": {
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
