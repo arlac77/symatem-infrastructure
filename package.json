@@ -21,12 +21,12 @@
     "sym-infra-util": "bin/sym-infra-util"
   },
   "scripts": {
+    "pretest": "rollup -c tests/rollup.config.js",
+    "prepare": "rollup -c",
+    "test": "ava",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/module.js --section=API",
-    "lint": "documentation lint src/module.js",
-    "prepare": "rollup -c",
-    "pretest": "rollup -c tests/rollup.config.js",
-    "test": "ava"
+    "lint": "documentation lint src/module.js"
   },
   "dependencies": {
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
@@ -49,7 +49,7 @@
     "semantic-release": "^17.0.4"
   },
   "engines": {
-    "node": ">=12.16.0"
+    "node": ">=12.16.1"
   },
   "repository": {
     "type": "git",
