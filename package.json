@@ -4,9 +4,16 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "bin/symatem-infrastructure-systemd"
+  ],
   "main": "src/module.js",
   "module": "src/module.js",
   "description": "infrastructure taxometry with Symatem",
+  "keywords": [
+    "kronos-integration",
+    "systemd"
+  ],
   "contributors": [
     {
       "name": "Markus Felten",
@@ -18,7 +25,9 @@
   ],
   "license": "BSD-2-Clause",
   "bin": {
-    "sym-infra-util": "bin/sym-infra-util"
+    "sym-infra-util": "bin/sym-infra-util",
+    "symatem-infrastructure": "bin/symatem-infrastructure",
+    "symatem-infrastructure-systemd": "bin/symatem-infrastructure-systemd"
   },
   "scripts": {
     "prepare": "rollup -c",
@@ -29,6 +38,12 @@
     "lint": "documentation lint src/module.js"
   },
   "dependencies": {
+    "@kronos-integration/service": "^8.3.17",
+    "@kronos-integration/service-admin": "^3.0.14",
+    "@kronos-integration/service-authenticator": "^1.0.17",
+    "@kronos-integration/service-health-check": "^5.0.15",
+    "@kronos-integration/service-http": "^10.0.6",
+    "@kronos-integration/service-ldap": "^2.1.17",
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
     "caporal": "^1.0.0",
     "dns-zonefile": "^0.2.2",
@@ -38,19 +53,35 @@
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
+    "@semantic-release/exec": "^5.0.0",
     "acorn-class-fields": "https://github.com/arlac77/acorn-class-fields.git",
     "ava": "^3.5.0",
     "builtin-modules": "^3.1.0",
     "c8": "^7.1.0",
     "documentation": "^12.1.4",
+    "npm-pkgbuild": "^6.11.5",
     "rollup": "^1.32.0",
     "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-consts": "^1.0.1",
     "rollup-plugin-executable": "^1.5.2",
+    "rollup-plugin-native": "^1.2.8",
     "semantic-release": "^17.0.4"
+  },
+  "optionalDependencies": {
+    "@kronos-integration/service-systemd": "^2.2.12"
   },
   "engines": {
     "node": ">=12.16.1"
   },
+  "os": [
+    "linux",
+    "darwin"
+  ],
+  "cpu": [
+    "arm",
+    "arm64",
+    "x64"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/arlac77/symatem-infrastructure.git"
@@ -59,7 +90,46 @@
     "url": "https://github.com/arlac77/symatem-infrastructure/issues"
   },
   "homepage": "https://github.com/arlac77/symatem-infrastructure#readme",
+  "config": {
+    "socket": "/run/${name}/http/socket"
+  },
+  "pacman": {
+    "arch": [
+      "aarch64",
+      "armv7h",
+      "x86_64"
+    ],
+    "hooks": "pacman/hooks.sh",
+    "backup": "etc/${name}/config.json",
+    "installdir": "/services/${name}",
+    "additional-content": [
+      "npm-dist",
+      "npm-dependencies"
+    ],
+    "content": {
+      "/usr/lib/tmpfiles.d/${name}.conf": "pacman/tmpfiles.conf",
+      "/etc/${name}/config.json": "config/config.json"
+    },
+    "depends": {
+      "nginx-mainline": ">=1.17.9"
+    }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "npx npm-pkgbuild --pkgver ${nextRelease.version} --npm-dist --npm-modules pkgbuild pacman makepkg"
+        }
+      ]
+    ]
+  },
   "template": {
-    "inheritFrom": "arlac77/template-cli-app"
+    "inheritFrom": [
+      "arlac77/template-kronos-app",
+      "arlac77/template-github"
+    ]
   }
 }
