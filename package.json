@@ -21,19 +21,21 @@
     "sym-infra-util": "bin/sym-infra-util"
   },
   "scripts": {
-    "prepare": "rollup -c",
+    "prepare": "npm run snyk-protect && rollup -c",
     "pretest": "rollup -c tests/rollup.config.js",
     "test": "ava --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme src/module.js --section=API",
-    "lint": "documentation lint src/module.js"
+    "lint": "documentation lint src/module.js",
+    "snyk-protect": "snyk protect"
   },
   "dependencies": {
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
     "caporal": "^1.0.0",
     "dns-zonefile": "^0.2.2",
     "plist": "^3.0.0",
-    "symatem": "^1.16.4"
+    "symatem": "^1.16.4",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -65,5 +67,6 @@
       "arlac77/template-cli-app",
       "arlac77/template-github"
     ]
-  }
+  },
+  "snyk": true
 }
