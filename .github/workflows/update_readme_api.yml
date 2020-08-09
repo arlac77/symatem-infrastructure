@@ -16,6 +16,7 @@ jobs:
             - '-13'
             - '-14'
             - 14.6.0
+            - 14.7.0
       - run: npm install
       - run: npm run docs
       - uses: gr2m/create-or-update-pull-request-action@v1.x
