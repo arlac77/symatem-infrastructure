@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/module.js",
+  "main": "./src/module.js",
   "module": "src/module.js",
   "description": "infrastructure taxometry with Symatem",
   "contributors": [
