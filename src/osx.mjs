@@ -1,7 +1,7 @@
 const plist = require('plist'),
   path = require('path');
 
-import { writeFile } from './util';
+import { writeFile } from './util.mjs';
 
 /**
  * generate object suitable as source for plist computer record

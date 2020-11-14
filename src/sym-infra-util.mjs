@@ -1,8 +1,8 @@
-import { version } from '../package.json';
-import { generateComputers } from './osx';
-import { generateZones } from './dns';
 import NativeBackend from 'SymatemJS';
-import { migrate } from './migrate';
+import { version } from '../package.json';
+import { generateComputers } from './osx.mjs';
+import { generateZones } from './dns.mjs';
+import { migrate } from './migrate.mjs';
 
 const symatem = require('symatem'),
   path = require('path'),

@@ -1,7 +1,7 @@
 const zonefile = require('dns-zonefile'),
   path = require('path');
 
-import { writeFile } from './util';
+import { writeFile } from './util.mjs';
 
 export function generateZones(out, decoded, network) {
   const origin = network.origin.replace(/\.$/, '');
