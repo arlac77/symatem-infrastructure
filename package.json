@@ -52,8 +52,8 @@
   "homepage": "https://github.com/arlac77/symatem-infrastructure#readme",
   "template": {
     "inheritFrom": [
-      "arlac77/template-node-app",
-      "arlac77/template-github"
+      "arlac77/template-arlac77-github",
+      "arlac77/template-node-app"
     ]
   }
 }
