@@ -3,7 +3,7 @@
 [![minified size](https://badgen.net/bundlephobia/min/symatem-infrastructure)](https://bundlephobia.com/result?p=symatem-infrastructure)
 [![downloads](http://img.shields.io/npm/dm/symatem-infrastructure.svg?style=flat-square)](https://npmjs.org/package/symatem-infrastructure)
 [![GitHub Issues](https://img.shields.io/github/issues/arlac77/symatem-infrastructure.svg?style=flat-square)](https://github.com/arlac77/symatem-infrastructure/issues)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Farlac77%2Fsymatem-infrastructure%2Fbadge\&style=flat)](https://actions-badge.atrox.dev/arlac77/symatem-infrastructure/goto)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Farlac77%2Fsymatem-infrastructure%2Fbadge&style=flat)](https://actions-badge.atrox.dev/arlac77/symatem-infrastructure/goto)
 [![Coverage Status](https://coveralls.io/repos/arlac77/symatem-infrastructure/badge.svg)](https://coveralls.io/github/arlac77/symatem-infrastructure)
 
 # symatem-infrastructure
