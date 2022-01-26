@@ -29,7 +29,7 @@
   "dependencies": {
     "SymatemJS": "https://github.com/Symatem/SymatemJS.git",
     "caporal": "^1.0.0",
-    "dns-zonefile": "^0.2.2",
+    "dns-zonefile": "^0.3.0",
     "plist": "^3.0.0",
     "symatem": "^1.16.4"
   },
